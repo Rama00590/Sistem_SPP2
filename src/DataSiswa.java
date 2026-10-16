@@ -7,16 +7,19 @@
 /**
  *
  * @author XP
- */
+ */ 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 public class DataSiswa extends javax.swing.JFrame {
 
-    /**
-     * Creates new form DataSiswa
-     */
-    public DataSiswa() {
-        initComponents();
-    }
+    public static DefaultTableModel model =
+    new DefaultTableModel(
+        new Object[]{"NISN", "Nama", "Kelas"}, 0
+    );
+   public DataSiswa() {
+    initComponents();
+    jTable1.setModel(model);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,13 +66,10 @@ public class DataSiswa extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id Siswa", "Nama", "Kelas"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -126,9 +126,9 @@ public class DataSiswa extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(168, 168, 168)
                         .addComponent(jButton1)
-                        .addGap(80, 80, 80)
+                        .addGap(91, 91, 91)
                         .addComponent(jButton2)))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,7 +147,7 @@ public class DataSiswa extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(CBKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -177,16 +177,32 @@ public class DataSiswa extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+       DefaultTableModel model = DataSiswa.model;
 
-model.addRow(new Object[]{
-    IDSiswa.getText(),
-    Nama.getText(),
-    CBKelas.getSelectedItem()
-});
+String nisn = IDSiswa.getText().trim();
+String nama = Nama.getText().trim();
+String kelas = CBKelas.getSelectedItem().toString();
+
+if (nisn.isEmpty() || nama.isEmpty()) {
+    JOptionPane.showMessageDialog(this,
+        "NISN dan nama wajib diisi!");
+    return;
+}
+
+for (int i = 0; i < model.getRowCount(); i++) {
+    if (model.getValueAt(i, 0).toString().equals(nisn)) {
+        JOptionPane.showMessageDialog(this,
+            "NISN sudah terdaftar!");
+        return;
+    }
+}
+
+model.addRow(new Object[]{nisn, nama, kelas});
 
 IDSiswa.setText("");
 Nama.setText("");
+CBKelas.setSelectedIndex(0);
+    
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

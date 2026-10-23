@@ -14,7 +14,7 @@ public class DataSiswa extends javax.swing.JFrame {
 
     public static DefaultTableModel model =
     new DefaultTableModel(
-        new Object[]{"NISN", "Nama", "Kelas"}, 0
+        new Object[]{"NISN", "Nama", "Kelas", "Tanggal Lahir"}, 0
     );
    public DataSiswa() {
     initComponents();
@@ -42,6 +42,8 @@ public class DataSiswa extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        tanggal = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,7 +71,7 @@ public class DataSiswa extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id Siswa", "Nama", "Kelas"
+                "Id Siswa", "Nama", "Kelas", "Tanggal Lahir"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -98,6 +100,9 @@ public class DataSiswa extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel5.setText("Tanggal");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -112,23 +117,28 @@ public class DataSiswa extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
                         .addGap(56, 56, 56)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(IDSiswa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(CBKelas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Nama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(IDSiswa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(tanggal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(313, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(48, 48, 48)
                         .addComponent(jButton3))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(168, 168, 168)
+                        .addGap(156, 156, 156)
                         .addComponent(jButton1)
                         .addGap(91, 91, 91)
                         .addComponent(jButton2)))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addGap(35, 35, 35))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,7 +157,11 @@ public class DataSiswa extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(CBKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(tanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -158,7 +172,7 @@ public class DataSiswa extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton3)
                         .addGap(66, 66, 66)))
-                .addGap(49, 49, 49))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         pack();
@@ -183,6 +197,7 @@ String nisn = IDSiswa.getText().trim();
 String nama = Nama.getText().trim();
 String kelas = CBKelas.getSelectedItem().toString();
 
+
 if (nisn.isEmpty() || nama.isEmpty()) {
     JOptionPane.showMessageDialog(this,
         "NISN dan nama wajib diisi!");
@@ -196,12 +211,25 @@ for (int i = 0; i < model.getRowCount(); i++) {
         return;
     }
 }
+java.util.Date tgl = tanggal.getDate();
 
-model.addRow(new Object[]{nisn, nama, kelas});
+if (tgl == null) {
+    JOptionPane.showMessageDialog(this,
+        "Pilih tanggal lahir dulu!");
+    return;
+}
+
+String tanggal = new java.text.SimpleDateFormat("dd-MM-yyyy")
+        .format(tgl);
+
+
+model.addRow(new Object[]{nisn, nama, kelas, tanggal});
+
 
 IDSiswa.setText("");
 Nama.setText("");
 CBKelas.setSelectedIndex(0);
+
     
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -260,7 +288,9 @@ CBKelas.setSelectedIndex(0);
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private com.toedter.calendar.JDateChooser tanggal;
     // End of variables declaration//GEN-END:variables
 }

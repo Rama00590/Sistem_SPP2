@@ -8,11 +8,13 @@
  *
  * @author XP
  */
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 public class DataPetugas extends javax.swing.JFrame {
     public static DefaultTableModel model =
     new DefaultTableModel(
-        new Object[]{"ID Petugas", "Nama"}, 0
+        new Object[]{"ID Petugas", "Nama", "Tanggal Lahir"}, 0
     );
 
     /**
@@ -43,7 +45,7 @@ public class DataPetugas extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        JDPetugas = new com.toedter.calendar.JDateChooser();
+        tanggal = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,7 +69,7 @@ public class DataPetugas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id Petugas", "Nama"
+                "Id Petugas", "Nama Petugas", "Tanggal Lahir"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -123,7 +125,7 @@ public class DataPetugas extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(IDPetugas, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(namapetugas, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JDPetugas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(tanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(146, 146, 146)
                         .addComponent(jButton1)
@@ -147,7 +149,7 @@ public class DataPetugas extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(JDPetugas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -175,16 +177,37 @@ public class DataPetugas extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-       DefaultTableModel model=DataPetugas.model;
+       DefaultTableModel model = DataPetugas.model;
+
+String id = IDPetugas.getText().trim();
+String nama = namapetugas.getText().trim();
+
+java.util.Date tgl = tanggal.getDate();
+
+if (id.isEmpty() || nama.isEmpty()) {
+    JOptionPane.showMessageDialog(this,
+            "ID Petugas dan nama wajib diisi!");
+    return;
+}
+
+if (tgl == null) {
+    JOptionPane.showMessageDialog(this,
+            "Pilih tanggal lahir dulu!");
+    return;
+}
+
+String tanggalLahir = new java.text.SimpleDateFormat("dd-MM-yyyy")
+        .format(tgl);
 
 model.addRow(new Object[]{
-    IDPetugas.getText(),
-    namapetugas.getText(),
-    
+    id,
+    nama,
+    tanggalLahir
 });
 
 IDPetugas.setText("");
 namapetugas.setText("");
+tanggal.setDate(null);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void namapetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namapetugasActionPerformed
@@ -238,7 +261,6 @@ namapetugas.setText("");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField IDPetugas;
-    private com.toedter.calendar.JDateChooser JDPetugas;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -249,5 +271,6 @@ namapetugas.setText("");
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField namapetugas;
+    private com.toedter.calendar.JDateChooser tanggal;
     // End of variables declaration//GEN-END:variables
 }
